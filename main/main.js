@@ -1,11 +1,12 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const dgram = require('dgram'); // UDP通信用モジュールを追加
 
 //メニューバー内容
 let template = [
 	{
-		label: 'Your-App',
+		label: 'アプリ',
 		submenu: [
 			{
 				label: 'アプリを終了',
@@ -17,7 +18,7 @@ let template = [
 		],
 	},
 	{
-		label: 'Window',
+		label: 'ウィンドウ',
 		submenu: [
 			{
 				label: '最小化',
@@ -50,6 +51,11 @@ let template = [
 let mainWindow;
 
 app.on('ready', () => {
+	//設定ファイル
+	const configPath = path.join(__dirname, '../src/config.json');
+	const configData = fs.readFileSync(configPath, 'utf-8');
+	const config = JSON.parse(configData);
+
 	//メニューバー設置
 	const menu = Menu.buildFromTemplate(template);
 	Menu.setApplicationMenu(menu);
@@ -70,6 +76,10 @@ app.on('ready', () => {
 	}
 
 	mainWindow.loadFile(path.join(__dirname, '../src', 'index.html'));
+
+	mainWindow.webContents.on('did-finish-load', () => {
+		mainWindow.webContents.send('config-data', config);
+	});
 });
 
 app.on('activate', () => {
@@ -81,14 +91,16 @@ app.on('activate', () => {
 });
 
 ipcMain.on('drag-coordinates', (event, coordinates) => {
-	console.log('Received drag coordinates:', coordinates);
+	// UDP通信処理
+	const { serverAddress, serverPort } = require('../src/config.json');
 
 	// UDP通信で座標データを送信
 	const client = dgram.createSocket('udp4');
 	const message = JSON.stringify(coordinates);
-	const serverPort = 12345; // 送信先ポート番号を適宜変更
-	const serverAddress = '192.168.1.2'; // 送信先のIPアドレスを適宜変更
+
 	client.send(message, serverPort, serverAddress, (err) => {
+		console.log(`message=${serverAddress}:${serverPort}`, message);
+
 		if (err) {
 			console.error('Error sending message:', err);
 		}

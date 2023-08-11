@@ -9,9 +9,9 @@
 			"output": "dist"
 		},
 		"files": [
-			"main",
-			"src",
-			"assets",
+			"main/*",
+			"src/*",
+			"assets/*",
 			"package.json",
 			"package-lock.json"
 		],
@@ -28,7 +28,16 @@
 		"nsis": {
 			"oneClick": false,
 			"allowToChangeInstallationDirectory": true
-		}
+		},
+		"extraResources": [
+			{
+				"from": "src",
+				"to": "./src",
+				"filter": [
+					"**/*"
+				]
+			}
+		]
 	},
 	"scripts": {
 		"start": "cross-env NODE_ENV=development electron .",
@@ -37,6 +46,7 @@
 		"build-mac": "electron-builder --mac --x64"
 	},
 	"devDependencies": {
+		"child_process": "^1.0.2",
 		"cross-env": "^7.0.3",
 		"electron": "^25.5.0",
 		"electron-builder": "^24.6.3",
