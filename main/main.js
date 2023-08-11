@@ -69,7 +69,7 @@ app.on('ready', () => {
 		mainWindow.webContents.openDevTools(); // DevToolsを自動で開く
 	}
 
-	mainWindow.loadFile(path.join(__dirname, '../renderer', 'index.html'));
+	mainWindow.loadFile(path.join(__dirname, '../src', 'index.html'));
 });
 
 app.on('activate', () => {

@@ -3,9 +3,38 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "main/main.js",
+	"build": {
+		"appId": "electron.udp.app",
+		"directories": {
+			"output": "dist"
+		},
+		"files": [
+			"main",
+			"src",
+			"assets",
+			"package.json",
+			"package-lock.json"
+		],
+		"mac": {
+			"icon": "assets/mac/icon_mac.icns",
+			"target": [
+				"dmg"
+			]
+		},
+		"win": {
+			"icon": "assets/win/icon_win.ico",
+			"target": "nsis"
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		}
+	},
 	"scripts": {
 		"start": "cross-env NODE_ENV=development electron .",
-		"build": "electron-builder"
+		"build": "npm run build-win",
+		"build-win": "electron-builder --win --x64",
+		"build-mac": "electron-builder --mac --x64"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3",
