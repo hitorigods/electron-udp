@@ -1,0 +1,16 @@
+{
+	"name": "electron-udp2",
+	"version": "1.0.0",
+	"description": "",
+	"main": "main/main.js",
+	"scripts": {
+		"start": "cross-env NODE_ENV=development electron .",
+		"build": "electron-builder"
+	},
+	"devDependencies": {
+		"cross-env": "^7.0.3",
+		"electron": "^25.5.0",
+		"electron-builder": "^24.6.3",
+		"nodemon": "^3.0.1"
+	}
+}
