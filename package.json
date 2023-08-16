@@ -1,28 +1,27 @@
 {
-	"name": "electron-udp2",
-	"version": "1.0.0",
-	"description": "",
-	"main": "main/main.js",
+	"name": "App",
+	"version": "1.1.0",
+	"description": "ElectronアプリによるUDP送信",
+	"main": "src/main/index.js",
 	"build": {
 		"appId": "electron.udp.app",
 		"directories": {
 			"output": "dist"
 		},
 		"files": [
-			"main/*",
-			"src/*",
-			"assets/*",
+			"src/main/*",
+			"src/assets/*",
 			"package.json",
 			"package-lock.json"
 		],
 		"mac": {
-			"icon": "assets/mac/icon_mac.icns",
+			"icon": "src/assets/mac/icon.icns",
 			"target": [
 				"dmg"
 			]
 		},
 		"win": {
-			"icon": "assets/win/icon_win.ico",
+			"icon": "src/assets/win/icon.ico",
 			"target": "nsis"
 		},
 		"nsis": {
@@ -31,8 +30,8 @@
 		},
 		"extraResources": [
 			{
-				"from": "src",
-				"to": "./src",
+				"from": "src/renderer",
+				"to": "./app",
 				"filter": [
 					"**/*"
 				]
@@ -40,16 +39,17 @@
 		]
 	},
 	"scripts": {
-		"start": "cross-env NODE_ENV=development electron .",
-		"build": "npm run build-win",
-		"build-win": "electron-builder --win --x64",
-		"build-mac": "electron-builder --mac --x64"
+		"dev": "cross-env NODE_ENV=development electron .",
+		"build": "run-s build:win build:mac",
+		"build:win": "electron-builder --win --x64",
+		"build:mac": "electron-builder --mac --x64"
 	},
 	"devDependencies": {
 		"child_process": "^1.0.2",
 		"cross-env": "^7.0.3",
 		"electron": "^25.5.0",
 		"electron-builder": "^24.6.3",
-		"nodemon": "^3.0.1"
+		"nodemon": "^3.0.1",
+		"npm-run-all": "^4.1.5"
 	}
 }
